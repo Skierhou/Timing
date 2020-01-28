@@ -12,6 +12,7 @@ public enum EOperateType
 
 public enum EPanelType
 {
+    None,
     MainPanel,
     TypePanel,
     DailyPanel,
@@ -22,11 +23,16 @@ public enum EPanelType
     AddPlanNotePanel,
     PlanNotePanel,
     SelectTimePanel,
+    WealthPanel,
+    WealthCenterPanel,
+    WealthTypePanel,
+    ColorSelectPanel,
+    AccountPanel,
 }
 
 public class UIManager:SingletonMono<UIManager>
 {
-    public EOperateType curPanelType;
+    public EOperateType curOperateType;
 
     private Dictionary<EPanelType, BasePanel> m_PanelDict = new Dictionary<EPanelType, BasePanel>();
     private Dictionary<EPanelType, string> m_PanelPathDict = new Dictionary<EPanelType, string>();
@@ -52,6 +58,11 @@ public class UIManager:SingletonMono<UIManager>
         m_PanelPathDict.Add(EPanelType.AddPlanNotePanel, "UI/AddPlanNotePanel");
         m_PanelPathDict.Add(EPanelType.PlanNotePanel, "UI/PlanNotePanel");
         m_PanelPathDict.Add(EPanelType.SelectTimePanel, "UI/SelectTimePanel");
+        m_PanelPathDict.Add(EPanelType.WealthPanel, "UI/WealthPanel");
+        m_PanelPathDict.Add(EPanelType.WealthCenterPanel, "UI/WealthCenterPanel");
+        m_PanelPathDict.Add(EPanelType.WealthTypePanel, "UI/WealthTypePanel");
+        m_PanelPathDict.Add(EPanelType.ColorSelectPanel, "UI/ColorSelectPanel");
+        m_PanelPathDict.Add(EPanelType.AccountPanel, "UI/AccountPanel");
 
         panelScale = new Vector3(Screen.width * 1.0f / OrginalScreenWidth, Screen.height * 1.0f / OrginalScreenHeight, 1);
 
@@ -62,12 +73,16 @@ public class UIManager:SingletonMono<UIManager>
 
     public void PushPanel(EPanelType inPanelType,object inPara = null)
     {
+        if (GetCurPanelType() == inPanelType)
+            return;
+
         BasePanel panel;
         if (!m_PanelDict.TryGetValue(inPanelType, out panel) || panel == null)
         {
             panel = GameObject.Instantiate(Resources.Load<GameObject>(m_PanelPathDict[inPanelType]), m_Canvas).GetComponent<BasePanel>();
             panel.transform.localPosition = Vector3.zero;
             panel.transform.localScale = panelScale;
+            panel.PanelType = inPanelType;
             m_PanelDict.Add(inPanelType, panel);
         }
         if (panel != null)
@@ -92,5 +107,14 @@ public class UIManager:SingletonMono<UIManager>
                 m_PanelStack.Peek().OnResume();
             }
         }
+    }
+
+    public EPanelType GetCurPanelType()
+    {
+        if (m_PanelStack.Count >= 1)
+        {
+            return m_PanelStack.Peek().PanelType;
+        }
+        return EPanelType.None;
     }
 }

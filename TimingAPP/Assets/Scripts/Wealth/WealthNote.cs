@@ -15,7 +15,7 @@ public class WealthNote
 
     public int Id { get => m_Id; set => m_Id = value; }
     public DateTime Date { get => m_DateTime; set => m_DateTime = value; }
-    public string DateStr { get => Tools.GetTimeString(m_DateTime); }
+    public string DateStr { get => Tools.GetTimeStringDay(m_DateTime) + "\n" + Tools.GetTimeStringMin(m_DateTime); }
     public string Content { get => m_Content; set => m_Content = value; }
     public float Money { get => m_Money; set => m_Money = value; }
     public int PayTypeId { get => m_PayTypeId; set => m_PayTypeId = value; }

@@ -16,7 +16,7 @@ public class PlanManager : Singleton<PlanManager>
         for (int i = 0; i < m_PlanList.Count; i++)
         {
             //DateTime,IsFinish,Title,Content,TimeType,Timer,TimerCount,Interval
-            string str = string.Format("{0},{1},{2},{3},{4},{5},{6},{7}", m_PlanList[i].DateStr, m_PlanList[i].IsFinish, m_PlanList[i].Title
+            string str = string.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}#{7}", m_PlanList[i].DateStr, m_PlanList[i].IsFinish, m_PlanList[i].Title
                 , m_PlanList[i].Content, (int)m_PlanList[i].TimeType, Tools.GetTimeString(m_PlanList[i].Timer), m_PlanList[i].TimerCount, m_PlanList[i].Interval);
             PlayerPrefs.SetString("PlanNote_" + i, str);
         }
@@ -27,7 +27,7 @@ public class PlanManager : Singleton<PlanManager>
         int count = PlayerPrefs.GetInt("PlanCount");
         for (int i = 0; i < count; i++)
         {
-            string[] strs = PlayerPrefs.GetString("PlanNote_" + i).Split(',');
+            string[] strs = PlayerPrefs.GetString("PlanNote_" + i).Split('#');
             if (strs.Length == 8)
             {
                 AddNote(strs[2],strs[3],Tools.GetTime(strs[0]), (ETimeType)int.Parse(strs[4]),Tools.GetTime(strs[5]),int.Parse(strs[6]),int.Parse(strs[7]),Color.white,bool.Parse(strs[1]));
