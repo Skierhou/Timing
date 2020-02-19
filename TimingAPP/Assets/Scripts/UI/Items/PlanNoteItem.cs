@@ -23,6 +23,8 @@ public class PlanNoteItem : MonoBehaviour
     private Text m_StateTxt;
     private Text m_StartTimeTxt;
     private Button m_Btn;
+    private Image m_Bg;
+    private Button m_DeleteBtn;
     private Toggle m_FinishToggle;
 
     private PlanNote planNote;
@@ -35,8 +37,11 @@ public class PlanNoteItem : MonoBehaviour
         m_StartTimeTxt = transform.Find("StartTimeTxt").GetComponent<Text>();
         m_FinishToggle = transform.Find("Toggle").GetComponent<Toggle>();
         m_Btn = GetComponent<Button>();
+        m_Bg = GetComponent<Image>();
+        m_DeleteBtn = transform.Find("DeleteBtn").GetComponent<Button>();
 
         m_FinishToggle.onValueChanged.AddListener(FinishToggleClick);
+        m_DeleteBtn.onClick.AddListener(OnDeleteBtnClick);
         m_Btn.onClick.AddListener(BtnClick);
     }
 
@@ -70,12 +75,12 @@ public class PlanNoteItem : MonoBehaviour
             if (planNote.Timer >= System.DateTime.Now)
             {
                 m_StateTxt.text += "已完成";
-                m_StateTxt.color = FinishColor;
+                m_Bg.color = FinishColor;
             }
             else
             {
                 m_StateTxt.text += "超时完成";
-                m_StateTxt.color = OutTimeFinishColor;
+                m_Bg.color = OutTimeFinishColor;
             }
         }
         else
@@ -83,13 +88,21 @@ public class PlanNoteItem : MonoBehaviour
             if (planNote.Timer >= System.DateTime.Now)
             {
                 m_StateTxt.text += "未完成";
-                m_StateTxt.color = WaitFinishColor;
+                m_Bg.color = WaitFinishColor;
             }
             else
             {
                 m_StateTxt.text += "超时!";
-                m_StateTxt.color = OutTimeColor;
+                m_Bg.color = OutTimeColor;
             }
         }
+    }
+    private void OnDeleteBtnClick()
+    {
+        if (PlanManager.Instance.RemoveNote(planNote))
+        {
+            Tools.MakeToast("删除成功!");
+        }
+        GameObject.Destroy(gameObject);
     }
 }

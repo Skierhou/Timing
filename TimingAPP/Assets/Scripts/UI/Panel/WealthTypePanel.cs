@@ -84,7 +84,7 @@ public class WealthTypePanel : BasePanel
     {
         if (string.IsNullOrEmpty(m_Input.text) || string.IsNullOrEmpty(m_Input.text.Trim()))
         {
-            //TODO：吐司提示
+            Tools.MakeToast("类型不能为空!");
         }
         else
         {

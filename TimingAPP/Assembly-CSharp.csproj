@@ -69,9 +69,11 @@
     <Compile Include="Assets\Scripts\Tools\Singleton.cs" />
     <Compile Include="Assets\Scripts\Tools\SingletonMono.cs" />
     <Compile Include="Assets\Scripts\Tools\Tools.cs" />
+    <Compile Include="Assets\Scripts\UI\Items\AccountLineItem.cs" />
     <Compile Include="Assets\Scripts\UI\Items\DailyNoteItem.cs" />
     <Compile Include="Assets\Scripts\UI\Items\DateItem.cs" />
     <Compile Include="Assets\Scripts\UI\Items\DateSelectItem.cs" />
+    <Compile Include="Assets\Scripts\UI\Items\InComeItem.cs" />
     <Compile Include="Assets\Scripts\UI\Items\MyScrollRect.cs" />
     <Compile Include="Assets\Scripts\UI\Items\PlanNoteItem.cs" />
     <Compile Include="Assets\Scripts\UI\Items\TaskItem.cs" />
@@ -90,8 +92,12 @@
     <Compile Include="Assets\Scripts\UI\Panel\MainPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Panel\PlanPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Panel\SelectTimePanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Panel\SettingPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Panel\TypePanel.cs" />
     <Compile Include="Assets\Scripts\UI\Panel\WealthCenterPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Panel\WealthLimitPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Panel\WealthLinePanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Panel\WealthNotePanel.cs" />
     <Compile Include="Assets\Scripts\UI\Panel\WealthPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Panel\WealthTypePanel.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />

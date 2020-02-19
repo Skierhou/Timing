@@ -12,6 +12,8 @@ public class AccountPanel : BasePanel
     private MyScrollRect m_ScrollRect;
     private GridLayoutGroup m_Grid;
     private Button m_AddBtn;
+    private Button m_SignBtn;
+    private Text m_SignTxt;
     private InputField m_MoneyInput;
     private InputField m_DesInput;
 
@@ -25,8 +27,11 @@ public class AccountPanel : BasePanel
         m_AddBtn = transform.Find("AddBtn").GetComponent<Button>();
         m_MoneyInput = transform.Find("MoneyInput").GetComponent<InputField>();
         m_DesInput = transform.Find("DesInput").GetComponent<InputField>();
+        m_SignBtn = transform.Find("MoneyInput/SignBtn").GetComponent<Button>();
+        m_SignTxt = transform.Find("MoneyInput/SignBtn/Text").GetComponent<Text>();
 
         m_AddBtn.onClick.AddListener(OnAddBtnClick);
+        m_SignBtn.onClick.AddListener(OnSignBtnClick);
         m_MoneyInput.onValueChanged.AddListener(OnMoneyInputChanged);
 
         deleteCallBack = OnDeleteCallBack;
@@ -89,6 +94,7 @@ public class AccountPanel : BasePanel
     public override void OnResume()
     {
         gameObject.SetActive(true);
+        UpdateUI();
     }
     public override void OnPop()
     {
@@ -99,14 +105,17 @@ public class AccountPanel : BasePanel
     {
         if (m_TypeSelect.options.Count <= 0)
         {
-            //TODO:吐司提示
+            Tools.MakeToast("请先添加账单类型!");
             return;
         }
         if (!string.IsNullOrEmpty(m_MoneyInput.text) && Tools.IsNumeric(m_MoneyInput.text))
         {
             string typeName = m_TypeSelect.captionText.text;
             TypeData typeData = WealthManager.Instance.GetTypeByName(typeName);
-            WealthManager.Instance.AddNote(DateTime.Now, m_DesInput.text, float.Parse(m_MoneyInput.text), typeData.typeId, typeData.name, typeData.color);
+
+            int sign = m_SignTxt.text == "+" ? 1 : -1;
+
+            WealthManager.Instance.AddNote(DateTime.Now, m_DesInput.text, float.Parse(m_MoneyInput.text) * sign, typeData.typeId, typeData.name, typeData.color);
             UpdateUI();
 
             m_MoneyInput.text = "";
@@ -114,7 +123,7 @@ public class AccountPanel : BasePanel
         }
         else
         {
-            //TODO：吐司提示
+            Tools.MakeToast("金钱不能为空!");
         }
     }
     private void OnMoneyInputChanged(string inValue)
@@ -131,5 +140,13 @@ public class AccountPanel : BasePanel
     private void OnDeleteCallBack()
     {
         UpdateUI();
+    }
+
+    private void OnSignBtnClick()
+    {
+        if (m_SignTxt.text == "+")
+            m_SignTxt.text = "-";
+        else
+            m_SignTxt.text = "+";
     }
 }

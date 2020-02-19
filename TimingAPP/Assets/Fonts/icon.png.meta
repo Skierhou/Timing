@@ -100,18 +100,18 @@ TextureImporter:
       name: icon_0
       rect:
         serializedVersion: 2
-        x: 149
-        y: 1
-        width: 30
-        height: 28
+        x: 64
+        y: 6
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8611725b83dcace45895231e47c6581b
+      spriteID: 97a2b2fd9f51a80409a7ed7ecb6d3d7f
       vertices: []
       indices: 
       edges: []
@@ -120,18 +120,18 @@ TextureImporter:
       name: icon_1
       rect:
         serializedVersion: 2
-        x: 162
-        y: 0
-        width: 1
-        height: 1
+        x: 148
+        y: 1
+        width: 31
+        height: 28
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 76ded63bc33c5004880246de84a52a89
+      spriteID: 2b61610cdee57844a8ed9e6010002b0a
       vertices: []
       indices: 
       edges: []

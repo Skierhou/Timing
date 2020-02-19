@@ -19,6 +19,25 @@ public class DailyNoteManager : Singleton<DailyNoteManager>
     //用来记忆当前typeId
     private int typeId;
 
+    public override void Initialize()
+    {
+        //读取之前所有的存储数据
+        m_NoteDict.Clear();
+        m_TypeSequence.Clear();
+        m_NoteSequence.Clear();
+        m_NoteIdDict.Clear();
+        m_TypeNameDict.Clear();
+        typeId = 0;
+        ReadData();
+        typeId = m_TypeNameDict.Count;
+    }
+
+    public bool RemoveType(int typeId)
+    {
+        m_NoteDict.Remove(typeId);
+        return m_TypeNameDict.Remove(typeId);
+    }
+
     public void StoreData()
     {
         int i = 0;
@@ -88,12 +107,6 @@ public class DailyNoteManager : Singleton<DailyNoteManager>
         return resList;
     }
 
-    public override void Initialize()
-    {
-        //读取之前所有的存储数据
-        ReadData();
-        typeId = m_TypeNameDict.Count;
-    }
 
     public void AddNote(DailyNote inNote)
     {

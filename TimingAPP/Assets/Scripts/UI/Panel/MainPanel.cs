@@ -14,6 +14,7 @@ public class MainPanel : BasePanel
     private Button m_DailyNoteBtn;
     private Button m_WealthNoteBtn;
     private Button m_PlanNoteBtn;
+    private Button m_SettingBtn;
 
     private Image m_DailyImg;
     private Image m_WealthImg;
@@ -27,6 +28,8 @@ public class MainPanel : BasePanel
         m_DailyNoteBtn = transform.Find("Head/DailyNoteBtn").GetComponent<Button>();
         m_WealthNoteBtn = transform.Find("Head/WealthNoteBtn").GetComponent<Button>();
         m_PlanNoteBtn = transform.Find("Head/PlanNoteBtn").GetComponent<Button>();
+        m_SettingBtn = transform.Find("Head/SettingBtn").GetComponent<Button>();
+
         m_DailyImg = m_DailyNoteBtn.GetComponent<Image>();
         m_WealthImg = m_WealthNoteBtn.GetComponent<Image>();
         m_PlanImg = m_PlanNoteBtn.GetComponent<Image>();
@@ -35,6 +38,7 @@ public class MainPanel : BasePanel
         m_DailyNoteBtn.onClick.AddListener(DailyNoteBtnClick);
         m_WealthNoteBtn.onClick.AddListener(WealthNoteBtnClick);
         m_PlanNoteBtn.onClick.AddListener(PlanNoteBtnClick);
+        m_SettingBtn.onClick.AddListener(OnSettingBtnClick);
         DailyNoteBtnClick();
     }
 
@@ -56,25 +60,25 @@ public class MainPanel : BasePanel
     {
         ChangeColor(EOperateType.Daily);
         UIManager.Instance.PushPanel(EPanelType.TypePanel, EOperateType.Daily);
-        DailyNoteManager.Instance.StoreData();
-        PlanManager.Instance.StoreData();
+
+        StoreData();
     }
     private void WealthNoteBtnClick()
     {
         ChangeColor(EOperateType.Wealth);
-        DailyNoteManager.Instance.StoreData();
-        PlanManager.Instance.StoreData();
         UIManager.Instance.PushPanel(EPanelType.WealthPanel,new WealthData {
             bSelectByType = true,
             id = -1
         });
+
+        StoreData();
     }
     private void PlanNoteBtnClick()
     {
         ChangeColor(EOperateType.Plan);
-        DailyNoteManager.Instance.StoreData();
-        PlanManager.Instance.StoreData();
         UIManager.Instance.PushPanel(EPanelType.PlanPanel);
+
+        StoreData();
     }
 
     private void ChangeColor(EOperateType inPanelType)
@@ -97,5 +101,17 @@ public class MainPanel : BasePanel
                 m_PlanImg.color = m_HighLightColor;
                 break;
         }
+    }
+
+    private void StoreData()
+    {
+        DailyNoteManager.Instance.StoreData();
+        PlanManager.Instance.StoreData();
+        WealthManager.Instance.StoreData();
+    }
+
+    private void OnSettingBtnClick()
+    {
+        UIManager.Instance.PushPanel(EPanelType.SettingPanel);
     }
 }

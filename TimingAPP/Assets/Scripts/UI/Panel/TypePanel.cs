@@ -20,8 +20,8 @@ public class TypePanel : BasePanel
 
     private GameObject typeItemTemplate;
 
-    public GridLayoutGroup grid;
-    public Button addBtn;
+    private GridLayoutGroup grid;
+    private Button addBtn;
 
     private List<GameObject> m_TypeGoList = new List<GameObject>();
 

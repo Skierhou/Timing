@@ -12,6 +12,7 @@ public class WealthNoteItem : MonoBehaviour
     private Text m_TypeTxt;
     private Text m_IncomeTxt;
     private Button m_DeleteBtn;
+    private Button m_Btn;
 
     public bool IsAccountCenter; //是否账户管理
 
@@ -24,6 +25,8 @@ public class WealthNoteItem : MonoBehaviour
         m_TimeTxt = transform.Find("TimeTxt").GetComponent<Text>();
         m_TypeTxt = transform.Find("TypeTxt").GetComponent<Text>();
         m_IncomeTxt = transform.Find("IncomeTxt").GetComponent<Text>();
+        m_Btn = GetComponent<Button>();
+        m_Btn.onClick.AddListener(OnMyBtnClick);
         if (IsAccountCenter)
         {
             m_DeleteBtn = transform.Find("DeleteBtn").GetComponent<Button>();
@@ -62,6 +65,11 @@ public class WealthNoteItem : MonoBehaviour
             m_IncomeTxt.text = wealthNote.Money.ToString();
             m_IncomeTxt.color = OutcomeColor;
         }
+    }
+
+    private void OnMyBtnClick()
+    {
+        UIManager.Instance.PushPanel(EPanelType.WealthNotePanel, wealthNote);
     }
 
     private void OnDeleteBtnClick()

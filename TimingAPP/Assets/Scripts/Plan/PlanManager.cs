@@ -38,7 +38,7 @@ public class PlanManager : Singleton<PlanManager>
     public override void Initialize()
     {
         planId = 0;
-        m_PlanList = new List<PlanNote>();
+        m_PlanList.Clear();
         ReadData();
     }
 
@@ -46,5 +46,10 @@ public class PlanManager : Singleton<PlanManager>
     {
         PlanNote note = new PlanNote(planId++, inTitle ,inContent, inDateTime, inTimeType, inTimer, inTimerCount, inInterval, inColor, inFinish);
         m_PlanList.Add(note);
+    }
+
+    public bool RemoveNote(PlanNote inNote)
+    {
+        return m_PlanList.Remove(inNote);
     }
 }

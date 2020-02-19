@@ -28,6 +28,11 @@ public enum EPanelType
     WealthTypePanel,
     ColorSelectPanel,
     AccountPanel,
+    WealthLimitPanel,
+    WealhtLinePanel,
+    SettingPanel,
+    WealthNotePanel,
+
 }
 
 public class UIManager:SingletonMono<UIManager>
@@ -44,7 +49,7 @@ public class UIManager:SingletonMono<UIManager>
     private const float OrginalScreenWidth = 288;
     private const float OrginalScreenHeight = 512;
 
-    private Vector3 panelScale;
+    public Vector3 panelScale;
 
     private void Awake()
     {
@@ -63,6 +68,10 @@ public class UIManager:SingletonMono<UIManager>
         m_PanelPathDict.Add(EPanelType.WealthTypePanel, "UI/WealthTypePanel");
         m_PanelPathDict.Add(EPanelType.ColorSelectPanel, "UI/ColorSelectPanel");
         m_PanelPathDict.Add(EPanelType.AccountPanel, "UI/AccountPanel");
+        m_PanelPathDict.Add(EPanelType.WealthLimitPanel, "UI/WealthLimitPanel");
+        m_PanelPathDict.Add(EPanelType.WealhtLinePanel, "UI/WealhtLinePanel");
+        m_PanelPathDict.Add(EPanelType.SettingPanel, "UI/SettingPanel");
+        m_PanelPathDict.Add(EPanelType.WealthNotePanel, "UI/WealthNotePanel");
 
         panelScale = new Vector3(Screen.width * 1.0f / OrginalScreenWidth, Screen.height * 1.0f / OrginalScreenHeight, 1);
 
@@ -75,6 +84,9 @@ public class UIManager:SingletonMono<UIManager>
     {
         if (GetCurPanelType() == inPanelType)
             return;
+
+        if(GetCurPanelType() != EPanelType.None)
+            m_PanelStack.Peek().OnPending();
 
         BasePanel panel;
         if (!m_PanelDict.TryGetValue(inPanelType, out panel) || panel == null)
@@ -116,5 +128,22 @@ public class UIManager:SingletonMono<UIManager>
             return m_PanelStack.Peek().PanelType;
         }
         return EPanelType.None;
+    }
+
+    private void Update()
+    {
+        if (Application.platform == RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Escape)) // 返回键
+        {
+            if (GetCurPanelType() != (EPanelType.MainPanel | EPanelType.None))
+                PopPanel();
+            else
+                Application.Quit();
+        }
+        if (Application.platform == RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Home)) // Home键
+        {
+            WealthManager.Instance.StoreData();
+            PlanManager.Instance.StoreData();
+            DailyNoteManager.Instance.StoreData();
+        }   
     }
 }

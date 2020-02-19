@@ -22,6 +22,8 @@ public class AddPlanNotePanel : BasePanel
     private List<TaskItem> taskItemList = new List<TaskItem>();
     private int taskId;
 
+    private Action<DateTime> endTimeCallBack;
+
     private void Awake()
     {
         m_TitleInput = transform.Find("Bg/TitleInput").GetComponent<InputField>();
@@ -36,6 +38,8 @@ public class AddPlanNotePanel : BasePanel
         m_SureBtn.onClick.AddListener(SureBtnClick);
         m_CancelBtn.onClick.AddListener(CancelBtnClick);
         m_AddTaskBtn.onClick.AddListener(AddTaskBtnClick);
+
+        endTimeCallBack = SetEndDate;
     }
 
     public override void OnPush(object inPara)
@@ -109,10 +113,16 @@ public class AddPlanNotePanel : BasePanel
     private void EndTimeBtnClick()
     {
         //选择日期
-        UIManager.Instance.PushPanel(EPanelType.SelectTimePanel, this);
+        UIManager.Instance.PushPanel(EPanelType.SelectTimePanel, new SelectTimeData { callback = endTimeCallBack, startYear = 0, endYear = 50 });
     }
     private void SureBtnClick()
     {
+        if (string.IsNullOrEmpty(m_EndTimeTxt.text) || string.IsNullOrEmpty(m_TitleInput.text))
+        {
+            Tools.MakeToast("不能为空!");
+            return;
+        }
+
         //字符串转换成Date时间 2019-10-02 18:37
         DateTime endDate = endDateTime == null ? System.DateTime.Now : endDateTime;
 

@@ -16,4 +16,9 @@ public class BasePanel : MonoBehaviour
     {
 
     }
+
+    public virtual void OnPending()
+    {
+
+    }
 }

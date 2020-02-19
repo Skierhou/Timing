@@ -7,6 +7,14 @@ using DG.Tweening;
 using System;
 using static UnityEngine.RectTransform;
 
+public struct SelectTimeData
+{
+    public Action<DateTime> callback;
+    public int startYear;
+    public int endYear;
+    public bool bCantShowDaySelect;   //是否不显示日期选择界面
+};
+
 public class SelectTimePanel : BasePanel
 {
     public Color DayHighLightColor;
@@ -61,6 +69,7 @@ public class SelectTimePanel : BasePanel
     private int min = 0;
 
     public DateTime selectDateTime;
+    private SelectTimeData selectTimeData;
 
     private void Awake()
     {
@@ -122,7 +131,7 @@ public class SelectTimePanel : BasePanel
         gameObject.SetActive(true);
         if (inPara != null)
         {
-            addPlanNotePanel = (AddPlanNotePanel)inPara;
+            selectTimeData = (SelectTimeData)inPara;
         }
         //清空
         m_DateSelectPanel.SetActive(false);
@@ -139,7 +148,7 @@ public class SelectTimePanel : BasePanel
         min = 0;
 
         //显示选择年份UI
-        ShowYearUI(0, 50);
+        ShowYearUI(selectTimeData.startYear, selectTimeData.endYear);
         ShowMinuteUI();
         MonthEndDrag();
         YearEndDrag();
@@ -166,7 +175,7 @@ public class SelectTimePanel : BasePanel
             GameObject go = GameObject.Instantiate(Resources.Load<GameObject>("DateSelectItem"), m_YearGrid.transform);
         }
         List<DateSelectItem> itemList = new List<DateSelectItem>();
-        for (int i = minYear; i < maxYear; i++)
+        for (int i = minYear; i <= maxYear; i++)
         {
             GameObject go = GameObject.Instantiate(Resources.Load<GameObject>("DateSelectItem"), m_YearGrid.transform);
             DateSelectItem dateItem = go.GetComponent<DateSelectItem>();
@@ -271,15 +280,24 @@ public class SelectTimePanel : BasePanel
     {
         if (m_YearPanel.activeSelf)
         {
-            m_YearPanel.SetActive(false);
-            m_DateSelectPanel.SetActive(true);
-            UpdateDateUI();
+            if (!selectTimeData.bCantShowDaySelect)
+            {
+                m_YearPanel.SetActive(false);
+                m_DateSelectPanel.SetActive(true);
+                UpdateDateUI();
+            }
+            else
+            {
+                selectDateTime = new DateTime(year, month, 1, 0, 0, 0);
+                selectTimeData.callback?.Invoke(selectDateTime);
+                UIManager.Instance.PopPanel();
+            }
         }
         else
         {
             if (day == 0)
             {
-                //TODO:提示选择日期
+                Tools.MakeToast("请选择日期!");
             }
             else
             {
@@ -287,10 +305,8 @@ public class SelectTimePanel : BasePanel
                     hour += 12;
                 hour = hour == 24 ? 0 : hour;
                 selectDateTime = new DateTime(year, month, day, hour, min, 0);
-                if (addPlanNotePanel != null && selectDateTime != null)
-                {
-                    addPlanNotePanel.SetEndDate(selectDateTime);
-                }
+
+                selectTimeData.callback?.Invoke(selectDateTime);
                 UIManager.Instance.PopPanel();
             }
         }
@@ -379,7 +395,7 @@ public class SelectTimePanel : BasePanel
             }
             else
             {
-                if (inSelectItems.Length > count)
+                if (inSelectItems.Length > count && count >= 0)
                 {
                     inSelectItems[count].SetHighLight(true);
                     value = inSelectItems[count].value;
@@ -395,7 +411,7 @@ public class SelectTimePanel : BasePanel
             }
             else
             {
-                if (inSelectItems.Length > count + 1)
+                if (inSelectItems.Length > count + 1 && count + 1 >= 0)
                 {
                     inSelectItems[count + 1].SetHighLight(true);
                     value = inSelectItems[count + 1].value;
